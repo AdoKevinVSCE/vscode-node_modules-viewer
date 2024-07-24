@@ -1,19 +1,19 @@
 {
   "publisher": "KevinLaw",
-  "name": "vscode-search-node-modules",
-  "displayName": "Search node_modules",
+  "name": "vscode-node_modules-viewer",
+  "displayName": "node_modules viewer",
   "version": "1.0.0",
   "private": true,
   "description": "Plugin for VS Code that allows you to quickly navigate the file inside your project's node_modules directory.",
   "author": "Kevin Law <kevinlaw1024@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/adokevin/vscode-search-node_modules#readme",
+  "homepage": "https://github.com/adokevin/vscode-node_modules-viewer#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/adokevin/vscode-search-node_modules"
+    "url": "https://github.com/adokevin/vscode-node_modules-viewer"
   },
   "bugs": {
-    "url": "https://github.com/adokevin/vscode-search-node_modules/issues"
+    "url": "https://github.com/adokevin/vscode-node_modules-viewer/issues"
   },
   "categories": [
     "Programming Languages",
@@ -53,6 +53,10 @@
   },
   "contributes": {
     "commands": [
+      {
+        "command": "search_node_modules",
+        "title": "View node_modules"
+      },
       {
         "command": "search_node_modules",
         "title": "Search node_modules"
