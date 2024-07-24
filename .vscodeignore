@@ -1,5 +1,8 @@
 src
-node_modules
-test
 .github
 .vscode
+test
+tsup.config.ts
+tsconfig.json
+.gitignore
+pnpm-*.yaml

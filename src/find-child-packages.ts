@@ -1,14 +1,22 @@
-import fs from 'fs';
-import util from 'util';
-import path from 'path';
-import { loadJsonFile } from 'load-json-file';
 import { glob } from 'glob';
+import loadJsonFile from 'load-json-file';
+import fs from 'node:fs/promises';
+import path from 'path';
 import { showWarning } from './utils';
+import { parse } from 'yaml';
 
-const exists = util.promisify(fs.exists);
+async function exists(path: string) {
+  try {
+    await fs.access(path, fs.constants.R_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 const PACKAGE_JSON_FILE = 'package.json';
 const LERNA_CONFIG_FILE = 'lerna.json';
+const PNPM_CONFIG_FILE = 'pnpm-workspace.yaml';
 const DOUBLE_STAR = '**'; // globstar
 
 const flat = (arrays: string[][]) => ([] as string[]).concat.apply([], arrays);
@@ -32,10 +40,27 @@ const getLernaPackagesConfig = async (root: string) => {
     return [];
   }
   try {
-    const config = await loadJsonFile<{ packages?: string[] }>(lernaConfigFile);
+    const config: {
+      packages?: string[];
+    } = await loadJsonFile<{ packages?: string[] }>(lernaConfigFile);
     return Array.isArray(config?.packages) ? config.packages : [];
   } catch (error) {
     showWarning(`Ignoring invalid ${LERNA_CONFIG_FILE} file at: ${lernaConfigFile}`);
+    return [];
+  }
+};
+
+const getPnpmPackagesConfig = async (root: string) => {
+  const pnpmConfigFile = path.join(root, PNPM_CONFIG_FILE);
+  if (!(await exists(pnpmConfigFile))) {
+    return [];
+  }
+  try {
+    const fileStr = await fs.readFile(pnpmConfigFile, 'utf8');
+    const config = await parse(fileStr);
+    return Array.isArray(config?.packages) ? config.packages : [];
+  } catch (error) {
+    showWarning(`Ignoring invalid ${PNPM_CONFIG_FILE} file at: ${pnpmConfigFile}`);
     return [];
   }
 };
@@ -61,6 +86,7 @@ export async function findChildPackages(root: string) {
   const patterns = distinct([
     ...(await getLernaPackagesConfig(root)),
     ...(await getYarnWorkspacesConfig(root)),
+    ...(await getPnpmPackagesConfig(root)),
   ]);
 
   const matchesArr = await Promise.all(

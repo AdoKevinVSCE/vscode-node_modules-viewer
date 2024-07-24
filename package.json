@@ -1,8 +1,8 @@
 {
   "publisher": "KevinLaw",
-  "name": "vscode-search-node_modules",
+  "name": "vscode-search-node-modules",
   "displayName": "Search node_modules",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "private": true,
   "description": "Plugin for VS Code that allows you to quickly navigate the file inside your project's node_modules directory.",
   "author": "Kevin Law <kevinlaw1024@gmail.com>",
@@ -16,30 +16,28 @@
     "url": "https://github.com/adokevin/vscode-search-node_modules/issues"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Other"
   ],
   "main": "./dist/index.js",
   "icon": "res/icon.png",
-  "files": [
-    "dist"
-  ],
   "engines": {
     "vscode": "^1.78.1"
   },
   "scripts": {
-    "build": "tsup src/index.ts --external vscode --minify --sourcemap=false",
+    "build": "tsup --minify --no-sourcemap",
     "dev": "pnpm run build --watch --sourcemap",
     "lint": "eslint .",
     "vscode:prepublish": "pnpm run build",
     "publish": "vsce publish --no-dependencies",
     "pack": "vsce package --no-dependencies",
-    "test": "vitest",
+    "test": "vitest --passWithNoTests",
     "typecheck": "tsc --noEmit",
     "release": "bumpp && pnpm run publish"
   },
   "devDependencies": {
     "@types/node": "^20.14.11",
-    "@types/vscode": "^1.91.0",
+    "@types/vscode": "^1.78.1",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
     "@typescript-eslint/parser": "^7.16.1",
     "@vscode/vsce": "^2.31.0",
@@ -56,7 +54,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.search",
+        "command": "search_node_modules",
         "title": "Search node_modules"
       }
     ],
@@ -72,11 +70,6 @@
           "type": "string",
           "default": "node_modules",
           "description": "Relative path to node_modules folder."
-        },
-        "search-node-modules.searchParentModules": {
-          "type": "boolean",
-          "default": true,
-          "description": "Include modules from parent folders in search results."
         },
         "search-node-modules.orderPriority": {
           "type": "array",
@@ -94,8 +87,8 @@
     "compare-versions": "^6.1.1",
     "find-up": "5.0.0",
     "glob": "^11.0.0",
-    "load-json-file": "^7.0.1",
-    "radash": "^12.1.0",
-    "read-pkg": "^5.2.0"
+    "load-json-file": "^6.2.0",
+    "read-pkg": "^5.2.0",
+    "yaml": "^2.4.5"
   }
 }

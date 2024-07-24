@@ -1,11 +1,9 @@
-import { type ExtensionContext } from 'vscode';
-import vscode from 'vscode';
 import fs from 'node:fs/promises';
 import path from 'path';
-import { findParentModules } from './find-parent-modules';
+import vscode, { type ExtensionContext } from 'vscode';
 import { findChildPackages } from './find-child-packages';
-import { showError } from './utils';
 import { sortFiles } from './sort-files';
+import { showError } from './utils';
 
 let lastFolder = '';
 let lastWorkspaceName = '';
@@ -14,12 +12,11 @@ let lastWorkspaceRoot = '';
 const nodeModules = 'node_modules';
 
 export function activate(context: ExtensionContext) {
-  const searchNodeModules = vscode.commands.registerCommand('extension.search', () => {
+  const searchNodeModules = vscode.commands.registerCommand('search_node_modules', async () => {
     const preferences = vscode.workspace.getConfiguration('search-node-modules');
 
     const useLastFolder = preferences.get('useLastFolder', false);
     const nodeModulesPath = preferences.get('path', nodeModules);
-    const searchParentModules = preferences.get('searchParentModules', true);
     const orderPriority = preferences.get('orderPriority', []);
 
     async function searchPath(workspaceName: string, workspaceRoot: string, folderPath: string) {
@@ -51,10 +48,11 @@ export function activate(context: ExtensionContext) {
 
       // If searching in root node_modules, also include modules from parent folders, that are outside of the workspace
       if (folderPath === nodeModulesPath) {
-        if (searchParentModules) {
-          const parentModules = await findParentModules(workspaceRoot, nodeModulesPath);
-          options.push(...parentModules);
-        }
+        // TODO: currently I don't have this use case
+        // if (searchParentModules) {
+        //   const parentModules = await findParentModules(workspaceRoot, nodeModulesPath);
+        //   options.push(...parentModules);
+        // }
       } else {
         // Otherwise, show option to move back to root
         options.push('');
@@ -79,19 +77,17 @@ export function activate(context: ExtensionContext) {
 
           // If selected is a folder, traverse it,
           // otherwise open file.
-          fs.stat(selectedFullPath, (statErr, stats) => {
-            if (stats.isDirectory()) {
-              searchPath(workspaceName, workspaceRoot, selectedPath);
-            } else {
-              lastWorkspaceName = workspaceName;
-              lastWorkspaceRoot = workspaceRoot;
-              lastFolder = folderPath;
+          const stats = await fs.stat(selectedFullPath);
+          if (stats.isDirectory()) {
+            searchPath(workspaceName, workspaceRoot, selectedPath);
+          } else {
+            lastWorkspaceName = workspaceName;
+            lastWorkspaceRoot = workspaceRoot;
+            lastFolder = folderPath;
 
-              vscode.workspace
-                .openTextDocument(selectedFullPath, selectedPath)
-                .then(vscode.window.showTextDocument);
-            }
-          });
+            const doc = await vscode.workspace.openTextDocument(selectedFullPath);
+            vscode.window.showTextDocument(doc);
+          }
         }
       }
     }
@@ -162,13 +158,13 @@ export function activate(context: ExtensionContext) {
       return showError('You must have a workspace opened.');
     }
 
-    getWorkspaceFolder()
-      .then((folder) => folder && getProjectFolder(folder))
-      .then((folder) => {
-        if (folder) {
-          searchPath(folder.name, folder.path, nodeModulesPath);
-        }
-      });
+    const workSpaceFolder = await getWorkspaceFolder();
+    if (workSpaceFolder) {
+      const folder = await getProjectFolder(workSpaceFolder);
+      if (folder) {
+        searchPath(folder.name, folder.path, nodeModulesPath);
+      }
+    }
   });
 
   context.subscriptions.push(searchNodeModules);
