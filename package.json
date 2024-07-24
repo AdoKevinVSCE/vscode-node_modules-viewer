@@ -1,0 +1,99 @@
+{
+  "publisher": "KevinLaw",
+  "name": "vscode-search-node_modules",
+  "displayName": "Search node_modules",
+  "version": "1.0.2",
+  "private": true,
+  "description": "Plugin for VS Code that allows you to quickly navigate the file inside your project's node_modules directory.",
+  "author": "Kevin Law <kevinlaw1024@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/adokevin/vscode-search-node_modules#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adokevin/vscode-search-node_modules"
+  },
+  "bugs": {
+    "url": "https://github.com/adokevin/vscode-search-node_modules/issues"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./dist/index.js",
+  "icon": "res/icon.png",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "vscode": "^1.78.1"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --external vscode --minify --sourcemap=false",
+    "dev": "pnpm run build --watch --sourcemap",
+    "lint": "eslint .",
+    "vscode:prepublish": "pnpm run build",
+    "publish": "vsce publish --no-dependencies",
+    "pack": "vsce package --no-dependencies",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "release": "bumpp && pnpm run publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "@types/vscode": "^1.91.0",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "@typescript-eslint/parser": "^7.16.1",
+    "@vscode/vsce": "^2.31.0",
+    "bumpp": "^9.4.1",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "pnpm": "^9.5.0",
+    "prettier": "^3.3.3",
+    "tsup": "^8.1.2",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4",
+    "vitest": "^2.0.3"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.search",
+        "title": "Search node_modules"
+      }
+    ],
+    "configuration": {
+      "title": "Search node_modules",
+      "properties": {
+        "search-node-modules.useLastFolder": {
+          "type": "boolean",
+          "default": false,
+          "description": "Default to folder of last opened file when searching."
+        },
+        "search-node-modules.path": {
+          "type": "string",
+          "default": "node_modules",
+          "description": "Relative path to node_modules folder."
+        },
+        "search-node-modules.searchParentModules": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include modules from parent folders in search results."
+        },
+        "search-node-modules.orderPriority": {
+          "type": "array",
+          "default": [
+            "index.js",
+            "README.md",
+            "package.json"
+          ],
+          "description": "List of preferred names that should be shown at the top of the result list"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "compare-versions": "^6.1.1",
+    "find-up": "5.0.0",
+    "radash": "^12.1.0",
+    "read-pkg": "^5.2.0"
+  }
+}
