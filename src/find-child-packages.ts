@@ -44,7 +44,7 @@ const getLernaPackagesConfig = async (root: string) => {
       packages?: string[];
     } = await loadJsonFile<{ packages?: string[] }>(lernaConfigFile);
     return Array.isArray(config?.packages) ? config.packages : [];
-  } catch (error) {
+  } catch (_error) {
     showWarning(`Ignoring invalid ${LERNA_CONFIG_FILE} file at: ${lernaConfigFile}`);
     return [];
   }
@@ -59,7 +59,7 @@ const getPnpmPackagesConfig = async (root: string) => {
     const fileStr = await fs.readFile(pnpmConfigFile, 'utf8');
     const config = await parse(fileStr);
     return Array.isArray(config?.packages) ? config.packages : [];
-  } catch (error) {
+  } catch (_error) {
     showWarning(`Ignoring invalid ${PNPM_CONFIG_FILE} file at: ${pnpmConfigFile}`);
     return [];
   }
@@ -76,7 +76,7 @@ const getYarnWorkspacesConfig = async (root: string) => {
       workspaces?: string[];
     }>(packageJsonFile);
     return Array.isArray(config?.workspaces) ? config.workspaces : [];
-  } catch (error) {
+  } catch (_error) {
     showWarning(`Ignoring invalid ${PACKAGE_JSON_FILE} file at: ${packageJsonFile}`);
     return [];
   }

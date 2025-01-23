@@ -170,4 +170,5 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(searchNodeModules);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export function deactivate() {}
