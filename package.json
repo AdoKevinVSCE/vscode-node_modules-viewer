@@ -7,13 +7,13 @@
   "description": "Plugin for VS Code that allows you to quickly navigate the file inside your project's node_modules directory.",
   "author": "Kevin Law <kevinlaw1024@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/adokevin/vscode-node_modules-viewer#readme",
+  "homepage": "https://github.com/AdoKevinVSCE/vscode-node_modules-viewer#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/adokevin/vscode-node_modules-viewer"
+    "url": "https://github.com/AdoKevinVSCE/vscode-node_modules-viewer"
   },
   "bugs": {
-    "url": "https://github.com/adokevin/vscode-node_modules-viewer/issues"
+    "url": "https://github.com/AdoKevinVSCE/vscode-node_modules-viewer/issues"
   },
   "categories": [
     "Programming Languages",
@@ -33,7 +33,7 @@
     "pack": "vsce package --no-dependencies",
     "test": "vitest --passWithNoTests",
     "typecheck": "tsc --noEmit",
-    "release": "bumpp && pnpm run publish"
+    "release": "pnpm run typecheck && pnpm run lint && pnpm run build && bumpp"
   },
   "devDependencies": {
     "@types/node": "^20.14.11",
@@ -94,5 +94,6 @@
     "load-json-file": "^6.2.0",
     "read-pkg": "^5.2.0",
     "yaml": "^2.4.5"
-  }
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }
