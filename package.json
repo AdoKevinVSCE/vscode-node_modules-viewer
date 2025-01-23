@@ -1,6 +1,6 @@
 {
   "publisher": "KevinLaw",
-  "name": "node-modules-viewer",
+  "name": "vscode-search-node-modules",
   "displayName": "node_modules viewer",
   "version": "1.0.1",
   "private": true,
