@@ -2,7 +2,7 @@
   "publisher": "KevinLaw",
   "name": "node-modules-viewer",
   "displayName": "node_modules viewer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "quickly navigate the file inside your project's node_modules directory.",
   "author": "Kevin Law <kevinlaw1024@gmail.com>",
