@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [lts/*]
 
     steps:
       - uses: actions/checkout@v4
@@ -31,10 +31,21 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Publish
-        run: pnpm run publish
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      - name: Build
+        run: pnpm run build
+
+      - name: Publish to Open VSX Registry
+        uses: HaaLeo/publish-vscode-extension@v2
+        with:
+          pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          dependencies: false
+
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v2
+        with:
+          pat: ${{ secrets.VSCE_PAT }}
+          registryUrl: https://marketplace.visualstudio.com
+          dependencies: false
 
       - run: npx changelogithub
         env:

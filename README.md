@@ -6,4 +6,4 @@ This is a forked from [Search node_modules](https://github.com/jasonnutter/vscod
 
 ## License
 
-[MIT](./LICENSE) License © 2025 [Kevin Law](https://github.com/adokevin)
+[MIT](./LICENSE) License © 2025 [Kevin Law](https://github.com/AdoKevin)
