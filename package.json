@@ -2,7 +2,7 @@
   "publisher": "KevinLaw",
   "name": "vscode-search-node-modules",
   "displayName": "node_modules viewer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "quickly navigate the file inside your project's node_modules directory.",
   "author": "Kevin Law <kevinlaw1024@gmail.com>",
