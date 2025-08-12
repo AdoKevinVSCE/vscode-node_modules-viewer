@@ -22,7 +22,7 @@
   "main": "./dist/index.js",
   "icon": "res/icon.png",
   "engines": {
-    "vscode": "^1.102.0"
+    "vscode": "^1.78.1"
   },
   "scripts": {
     "build": "tsup --minify --no-sourcemap",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@types/node": "^22.17.1",
-    "@types/vscode": "^1.102.0",
+    "@types/vscode": "^1.78.1",
     "@vscode/vsce": "^3.6.0",
     "bumpp": "^10.2.3",
     "eslint": "^9.33.0",
